@@ -59,7 +59,8 @@ struct ElementMap
 // Ordered by descending priority
 static const ElementMap elementMap[] =
 {
-    { "xcb", "vaapisink" },
+    { "xcb", "eglglessink" },
+    { "xcb", "rkximagesink" },
     { "xcb", "xvimagesink" },
     { "xcb", "ximagesink" }
 };
