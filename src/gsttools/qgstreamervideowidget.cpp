@@ -144,15 +144,33 @@ void QGstreamerVideoWidgetControl::stopRenderer()
 {
     m_stopped = true;
     updateWidgetAttributes();
+
     m_widget->setNativeSize(QSize());
 }
 
 void QGstreamerVideoWidgetControl::onNativeVideoSizeChanged()
 {
     const QSize &size = m_videoOverlay.nativeVideoSize();
+    QString sinkName = QString(GST_ELEMENT_NAME(m_videoOverlay.videoSink()));
 
     if (size.isValid())
         m_stopped = false;
+
+    /* choose suitable sink before playing */
+    if (size.width() > 2048 || size.height() > 2048) {
+        if (sinkName.left(10)  != QString("ximagesink")) {
+            qWarning()<<"rkximagesink";
+            m_videoOverlay.changeSink("rkximagesink");
+            emit sinkChanged();
+        }
+
+    } else {
+        if (sinkName.left(11) != QString("eglglessink")) {
+            qWarning()<<"eglglessink";
+            m_videoOverlay.changeSink("eglglessink");
+            emit sinkChanged();
+        }
+    }
 
     if (m_widget)
         m_widget->setNativeSize(size);

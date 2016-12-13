@@ -436,4 +436,40 @@ void QGstreamerVideoOverlay::setSaturation(int saturation)
     m_saturation = saturation;
 }
 
+void QGstreamerVideoOverlay::changeSink(const QByteArray &elementName)
+{
+    if (m_videoSink) {
+        GstPad *pad = gst_element_get_static_pad(m_videoSink, "sink");
+        removeProbeFromPad(pad);
+        gst_object_unref(GST_OBJECT(pad));
+        gst_object_unref(GST_OBJECT(m_videoSink));
+    }
+
+    m_videoSink = gst_element_factory_make(elementName.constData(), NULL);
+
+    if (m_videoSink) {
+        qt_gst_object_ref_sink(GST_OBJECT(m_videoSink)); //Take ownership
+
+        GstPad *pad = gst_element_get_static_pad(m_videoSink, "sink");
+        addProbeToPad(pad);
+        gst_object_unref(GST_OBJECT(pad));
+
+        m_hasForceAspectRatio = g_object_class_find_property(G_OBJECT_GET_CLASS(m_videoSink), "force-aspect-ratio");
+        m_hasBrightness = g_object_class_find_property(G_OBJECT_GET_CLASS(m_videoSink), "brightness");
+        m_hasContrast = g_object_class_find_property(G_OBJECT_GET_CLASS(m_videoSink), "contrast");
+        m_hasHue = g_object_class_find_property(G_OBJECT_GET_CLASS(m_videoSink), "hue");
+        m_hasSaturation = g_object_class_find_property(G_OBJECT_GET_CLASS(m_videoSink), "saturation");
+        m_hasShowPrerollFrame = g_object_class_find_property(G_OBJECT_GET_CLASS(m_videoSink), "show-preroll-frame");
+
+        if (m_hasShowPrerollFrame) {
+            g_signal_connect(m_videoSink, "notify::show-preroll-frame",
+                             G_CALLBACK(showPrerollFrameChanged), this);
+        }
+    } else {
+        qWarning() << "Failed to get sink.";
+    }
+
+    setWindowHandle(m_windowId);
+}
+
 QT_END_NAMESPACE
