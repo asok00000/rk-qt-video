@@ -103,6 +103,7 @@ private:
     void setStatusInfo(const QString &info);
     void handleCursor(QMediaPlayer::MediaStatus status);
     void updateDurationInfo(qint64 currentInfo);
+    bool eventFilter(QObject *obj, QEvent *event);
 
     QMediaPlayer *player;
     QMediaPlaylist *playlist;
@@ -125,6 +126,9 @@ private:
     QString trackInfo;
     QString statusInfo;
     qint64 duration;
+    bool vdieo_hide;
+    int save_width;
+    int save_height;
 };
 
 #endif // PLAYER_H
