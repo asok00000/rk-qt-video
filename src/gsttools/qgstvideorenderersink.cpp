@@ -466,8 +466,8 @@ void QGstVideoRendererSink::base_init(gpointer g_class)
             "sink", GST_PAD_SINK, GST_PAD_ALWAYS, GST_STATIC_CAPS(
                     "video/x-raw, "
                     "framerate = (fraction) [ 0, MAX ], "
-                    "width = (int) [ 1,  16], "
-                    "height = (int) [ 1, 16 ]"));
+                    "width = (int) [ 1,  MAX], "
+                    "height = (int) [ 1, MAX ]"));
 
     gst_element_class_add_pad_template(
             GST_ELEMENT_CLASS(g_class), gst_static_pad_template_get(&sink_pad_template));
