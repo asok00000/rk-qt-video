@@ -50,6 +50,29 @@
 #include <QMediaMetaData>
 #include <QtWidgets>
 
+class MySlider : public QSlider
+{
+public:
+   MySlider(Qt::Orientation orientation, QWidget *parent = 0) : QSlider(orientation, parent){
+
+   }
+
+protected:
+  void mousePressEvent ( QMouseEvent * event )
+  {
+    if (event->button() == Qt::LeftButton)
+    {
+        if (orientation() == Qt::Vertical)
+            setValue(minimum() + ((maximum()-minimum()) * (height()-event->y())) / height() ) ;
+        else
+            setValue(minimum() + ((maximum()-minimum()) * event->x()) / width() ) ;
+
+        event->accept();
+    }
+    QSlider::mousePressEvent(event);
+  }
+};
+
 Player::Player(QWidget *parent)
     : QWidget(parent)
     , videoWidget(0)
@@ -91,11 +114,13 @@ Player::Player(QWidget *parent)
 
     connect(playlistView, SIGNAL(activated(QModelIndex)), this, SLOT(jump(QModelIndex)));
 
-    slider = new QSlider(Qt::Horizontal, this);
+    slider = new MySlider(Qt::Horizontal, this);
     slider->setRange(0, player->duration() / 1000);
+    /* he slider emits the valueChanged() signal only when the user releases the slider. */
+    slider->setTracking(false);
 
     labelDuration = new QLabel(this);
-    connect(slider, SIGNAL(sliderMoved(int)), this, SLOT(seek(int)));
+    connect(slider, SIGNAL(valueChanged(int)), this, SLOT(seek(int)));
 
     labelHistogram = new QLabel(this);
     labelHistogram->setText("Histogram:");
@@ -238,7 +263,9 @@ void Player::durationChanged(qint64 duration)
 void Player::positionChanged(qint64 progress)
 {
     if (!slider->isSliderDown()) {
+        slider->blockSignals(true);
         slider->setValue(progress / 1000);
+        slider->blockSignals(false);
     }
     updateDurationInfo(progress / 1000);
 }
