@@ -47,6 +47,8 @@
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
 
+#define PLAYER_NO_COLOROPTIONS
+
 QT_BEGIN_NAMESPACE
 class QAbstractItemView;
 class QLabel;
