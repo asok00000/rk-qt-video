@@ -156,7 +156,7 @@ void QGstreamerVideoWidgetControl::onNativeVideoSizeChanged()
     if (size.isValid())
         m_stopped = false;
 
-    /* choose suitable sink before playing */
+    /*
     if (size.width() > 2048 || size.height() > 2048) {
         if (sinkName.left(10)  != QString("ximagesink")) {
             qWarning()<<"rkximagesink";
@@ -171,6 +171,7 @@ void QGstreamerVideoWidgetControl::onNativeVideoSizeChanged()
             emit sinkChanged();
         }
     }
+     */
 
     if (m_widget)
         m_widget->setNativeSize(size);
