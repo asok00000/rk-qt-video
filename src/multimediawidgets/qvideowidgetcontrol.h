@@ -77,6 +77,8 @@ public:
     virtual int saturation() const = 0;
     virtual void setSaturation(int saturation) = 0;
 
+    virtual void setSink(const QString& element) = 0;
+
 Q_SIGNALS:
     void fullScreenChanged(bool fullScreen);
     void brightnessChanged(int brightness);

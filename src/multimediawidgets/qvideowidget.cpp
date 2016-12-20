@@ -120,6 +120,11 @@ void QVideoWidgetControlBackend::setAspectRatioMode(Qt::AspectRatioMode mode)
     m_widgetControl->setAspectRatioMode(mode);
 }
 
+void QVideoWidgetControlBackend::setSink(const QString& element)
+{
+    m_widgetControl->setSink(element);
+}
+
 QRendererVideoWidgetBackend::QRendererVideoWidgetBackend(
         QMediaService *service, QVideoRendererControl *control, QWidget *widget)
     : m_service(service)
@@ -1010,6 +1015,16 @@ bool QVideoWidget::winEvent(MSG *message, long *result)
 }
 #endif
 
+bool QVideoWidget::setSink(const QString& element)
+{
+    Q_D(QVideoWidget);
+
+    if (d->currentControl && (element == "EGL" || element == "DRM")) {
+        d->currentControl->setSink(element);
+        return true;
+    }
+    return false;
+}
 
 #include "moc_qvideowidget.cpp"
 #include "moc_qvideowidget_p.cpp"

@@ -81,6 +81,10 @@ public:
 
     virtual Qt::AspectRatioMode aspectRatioMode() const = 0;
     virtual void setAspectRatioMode(Qt::AspectRatioMode mode) = 0;
+
+    virtual void setSink(const QString& element) {
+        return;
+    };
 };
 
 class QVideoWidgetBackend : public QObject, public QVideoWidgetControlInterface
@@ -115,6 +119,8 @@ public:
 
     Qt::AspectRatioMode aspectRatioMode() const;
     void setAspectRatioMode(Qt::AspectRatioMode mode);
+
+    void setSink(const QString& element);
 
 private:
     QMediaService *m_service;

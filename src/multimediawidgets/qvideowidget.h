@@ -82,6 +82,8 @@ public:
 
     QSize sizeHint() const;
 
+    bool setSink(const QString& element);
+
 public Q_SLOTS:
     void setFullScreen(bool fullScreen);
     void setAspectRatioMode(Qt::AspectRatioMode mode);
