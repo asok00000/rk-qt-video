@@ -79,6 +79,7 @@ signals:
     void fullScreenChanged(bool fullScreen);
 
 private slots:
+    void play();
     void open();
     void durationChanged(qint64 duration);
     void positionChanged(qint64 progress);
@@ -95,6 +96,8 @@ private slots:
     void videoAvailableChanged(bool available);
 
     void displayErrorMessage();
+
+    void sinkChange();
 
 #ifndef PLAYER_NO_COLOROPTIONS
     void showColorDialog();
@@ -114,6 +117,7 @@ private:
     QSlider *slider;
     QLabel *labelDuration;
     QPushButton *fullScreenButton;
+    QPushButton *sinkButton;
 #ifndef PLAYER_NO_COLOROPTIONS
     QPushButton *colorButton;
     QDialog *colorDialog;

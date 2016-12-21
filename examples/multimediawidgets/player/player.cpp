@@ -142,6 +142,7 @@ Player::Player(QWidget *parent)
     controls->setVolume(player->volume());
     controls->setMuted(controls->isMuted());
 
+    connect(controls, SIGNAL(play()), this, SLOT(play()));
     connect(controls, SIGNAL(play()), player, SLOT(play()));
     connect(controls, SIGNAL(pause()), player, SLOT(pause()));
     connect(controls, SIGNAL(stop()), player, SLOT(stop()));
@@ -161,6 +162,9 @@ Player::Player(QWidget *parent)
     fullScreenButton = new QPushButton(tr("FullScreen"), this);
     fullScreenButton->setCheckable(true);
 
+    sinkButton = new QPushButton("EGL", this);
+    connect(sinkButton, SIGNAL(clicked()), this, SLOT(sinkChange()));
+
 #ifndef PLAYER_NO_COLOROPTIONS
     colorButton = new QPushButton(tr("Color Options..."), this);
     colorButton->setEnabled(false);
@@ -178,6 +182,7 @@ Player::Player(QWidget *parent)
     controlLayout->addWidget(controls);
     controlLayout->addStretch(1);
     controlLayout->addWidget(fullScreenButton);
+    controlLayout->addWidget(sinkButton);
 #ifndef PLAYER_NO_COLOROPTIONS
     controlLayout->addWidget(colorButton);
 #endif
@@ -465,6 +470,26 @@ void Player::showColorDialog()
     colorDialog->show();
 }
 #endif
+
+void Player::play()
+{
+    /* don't allow sink change */
+    sinkButton->setEnabled(false);
+}
+
+
+void Player::sinkChange()
+{
+    if ( player->state() == QMediaPlayer::StoppedState ) {
+        if(sinkButton->text() == "DRM") {
+            sinkButton->setText("EGL");
+            videoWidget->setSink("EGL");
+        } else {
+            sinkButton->setText("DRM");
+            videoWidget->setSink("DRM");
+        }        
+    }
+}
 
 bool Player::eventFilter(QObject *obj, QEvent *event) {
     if (event->type() == QEvent::WindowStateChange) {
