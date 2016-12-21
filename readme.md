@@ -2,16 +2,13 @@
 
 run `/usr/lib/arm-linux-gnueabihf/qt5/examples/multimediawidgets/player/player`
 
+You can click the bottom right corner to switch between eglglesisnk(gpu) and rkximagesink(drm)
+
 ## Introduction
+This is qtmultimedia's rockchip version to support gstreamer-rk
 
-stack:
-
-vpu -> mpp -> gstreamer-rk -> qt video
-
-sink:
-
-eglglesisnk for 1080p  
-rkximagesink(kms) for 4k
+The video stack is:
+vpu -> mpp -> gstreamer-rk -> qtmultimedia -> player
 
 ## Build
 apt-get build-dep qtmultimedia-opensource-src
@@ -21,7 +18,3 @@ make install
 #### deb
 DEB_BUILD_OPTIONS=nocheck debuild -i -nc -us -uc -b -d  -aarmhf
 
-
-###
-
-![image](http://doc.qt.io/archives/qt-5.5/images/mediaplayerex.jpg)
