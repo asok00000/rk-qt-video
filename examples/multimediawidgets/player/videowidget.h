@@ -50,10 +50,14 @@ class VideoWidget : public QVideoWidget
 public:
     VideoWidget(QWidget *parent = 0);
 
+signals:
+    void setMaximized(bool maximize);
+
 protected:
     void keyPressEvent(QKeyEvent *event);
     void mouseDoubleClickEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);
+
 };
 
 #endif // VIDEOWIDGET_H
