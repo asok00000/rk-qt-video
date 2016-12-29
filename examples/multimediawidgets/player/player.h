@@ -76,7 +76,7 @@ public:
     void addToPlaylist(const QList<QUrl> urls);
 
 signals:
-    void maximizeChanged(bool max);
+    void fullscreenChanged(bool max);
 
 private slots:
     void play();
@@ -97,13 +97,13 @@ private slots:
 
     void displayErrorMessage();
 
-    void sinkChange();
+    void changeSink();
 
 #ifndef PLAYER_NO_COLOROPTIONS
     void showColorDialog();
 #endif
 
-    void setMaximized(bool maximize);
+    void setFullScreen(bool fullscreen);
 
 private:
     void setTrackInfo(const QString &info);

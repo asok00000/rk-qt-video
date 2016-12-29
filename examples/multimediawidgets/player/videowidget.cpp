@@ -58,11 +58,8 @@ VideoWidget::VideoWidget(QWidget *parent)
 
 void VideoWidget::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_Escape && isFullScreen()) {
-        emit setMaximized(false);
-        event->accept();
-    } else if (event->key() == Qt::Key_Enter && event->modifiers() & Qt::Key_Alt) {
-        emit setMaximized(!parentWidget()->isMaximized());
+    if (event->key() == Qt::Key_Enter && event->modifiers() & Qt::Key_Alt) {
+        emit setFullScreen(!parentWidget()->isFullScreen());
         event->accept();
     } else {
         QVideoWidget::keyPressEvent(event);
@@ -71,7 +68,7 @@ void VideoWidget::keyPressEvent(QKeyEvent *event)
 
 void VideoWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    emit setMaximized(!parentWidget()->isMaximized());
+    emit setFullScreen(!parentWidget()->isFullScreen());
     event->accept();
 }
 
