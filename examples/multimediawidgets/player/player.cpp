@@ -42,11 +42,9 @@
 
 #include "playercontrols.h"
 #include "playlistmodel.h"
-#include "histogramwidget.h"
 
 #include <QMediaService>
 #include <QMediaPlaylist>
-#include <QVideoProbe>
 #include <QMediaMetaData>
 #include <QtWidgets>
 
@@ -123,17 +121,6 @@ Player::Player(QWidget *parent)
     labelDuration = new QLabel(this);
     connect(slider, SIGNAL(valueChanged(int)), this, SLOT(seek(int)));
 
-    labelHistogram = new QLabel(this);
-    labelHistogram->setText("Histogram:");
-    histogram = new HistogramWidget(this);
-    QHBoxLayout *histogramLayout = new QHBoxLayout;
-    histogramLayout->addWidget(labelHistogram);
-    histogramLayout->addWidget(histogram, 1);
-
-    probe = new QVideoProbe(this);
-    connect(probe, SIGNAL(videoFrameProbed(QVideoFrame)), histogram, SLOT(processFrame(QVideoFrame)));
-    probe->setSource(player);
-
     QPushButton *openButton = new QPushButton(tr("Open"), this);
 
     connect(openButton, SIGNAL(clicked()), this, SLOT(open()));
@@ -195,7 +182,6 @@ Player::Player(QWidget *parent)
     hLayout->addWidget(labelDuration);
     layout->addLayout(hLayout);
     layout->addLayout(controlLayout);
-    layout->addLayout(histogramLayout);
 
     setLayout(layout);
 
