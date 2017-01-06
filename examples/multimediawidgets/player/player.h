@@ -58,6 +58,7 @@ class QPushButton;
 class QSlider;
 class QVideoProbe;
 class QVideoWidget;
+class QBoxLayout;
 QT_END_NAMESPACE
 
 class PlaylistModel;
@@ -137,6 +138,9 @@ private:
     bool vdieoHide;
     QSize saveSize;
     bool wasMaximized;
+
+    QBoxLayout *controlLayout;
+    QBoxLayout *layout;
 };
 
 #endif // PLAYER_H
